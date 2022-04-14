@@ -13,7 +13,7 @@ const thoughtController = {
 			});
 	},
 	getThoughtById(req, res) {
-		Thought.findOne({ _id: req.params.userId })
+		Thought.findOne({ _id: req.params.thoughtId })
 			.select("-__v")
 			.populate("reactions")
 			.then((databaseThoughtData) => {
