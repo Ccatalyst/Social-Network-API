@@ -63,8 +63,8 @@ const thoughtController = {
 				);
 			})
 
-			.then((databaseThoughtData) => {
-				res.json(databaseThoughtData);
+			.then(() => {
+				res.json({ message: "Thought added!" });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -89,12 +89,12 @@ const thoughtController = {
 					}
 				);
 			})
-			.then((databaseThoughtData) => {
-				if (!databaseThoughtData) {
-					return res.status(404).json({ message: "No thought with that Id" });
-				}
-				return Thought.deleteMany({ _id: { $in: databaseThoughtData.reactions } });
-			})
+			// .then((databaseThoughtData) => {
+			// 	if (!databaseThoughtData) {
+			// 		return res.status(404).json({ message: "No thought with that Id" });
+			// 	}
+			// 	return Thought.deleteMany({ _id: { $in: databaseThoughtData.reactions } });
+			// })
 			.then(() => {
 				res.json({ message: "Thought and associated reactions deleted" });
 			})
@@ -110,7 +110,7 @@ const thoughtController = {
 			},
 			{
 				$addToSet: {
-					reactions: req.params.reactionId,
+					reactions: req.body,
 				},
 			},
 			{
@@ -135,7 +135,7 @@ const thoughtController = {
 			},
 			{
 				$pull: {
-					reactions: req.params.reactionId,
+					reactions: { _id: req.params.reactionId },
 				},
 			},
 			{
